@@ -17,9 +17,12 @@ class App extends Component {
         { name: "Rudy B.", salary: 1800, increase: false, rise: false, id: 2 },
         { name: "Steev S.", salary: 1000, increase: false, rise: false, id: 3 },
         { name: "Kevin M.", salary: 2800, increase: false, rise: false, id: 4 },
-      ],
-    };
+      ]
+    }
+    this.maxId = 1000;
   }
+
+  
   deleteItem = (id) => {
     this.setState(({ data }) => {
       return {
@@ -27,6 +30,23 @@ class App extends Component {
       };
     });
   };
+
+  addItem = (name, salary) => {
+    const newItem = {
+        name, 
+        salary,
+        increase: false,
+        id: this.maxId++
+    }
+    this.setState(({data}) => {
+        const newArr = [...data, newItem];
+        return {
+            data: newArr
+        }
+    });
+}
+
+
 
   onToggleIncrease = (id) => {
     this.setState(({ data }) => {
@@ -81,7 +101,7 @@ class App extends Component {
           onToggleIncrease={this.onToggleIncrease}
           onToggleRise={this.onToggleRise}
         />
-        <EmployeesAddForm />
+        <EmployeesAddForm addItem={this.addItem}/>
       </div>
     );
   }
