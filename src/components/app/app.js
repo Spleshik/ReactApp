@@ -17,12 +17,12 @@ class App extends Component {
         { name: "Rudy B.", salary: 1800, increase: false, rise: false, id: 2 },
         { name: "Steev S.", salary: 1000, increase: false, rise: false, id: 3 },
         { name: "Kevin M.", salary: 2800, increase: false, rise: false, id: 4 },
-      ]
-    }
+      ],
+      term:''
+    };
     this.maxId = 1000;
   }
 
-  
   deleteItem = (id) => {
     this.setState(({ data }) => {
       return {
@@ -33,20 +33,18 @@ class App extends Component {
 
   addItem = (name, salary) => {
     const newItem = {
-        name, 
-        salary,
-        increase: false,
-        id: this.maxId++
-    }
-    this.setState(({data}) => {
-        const newArr = [...data, newItem];
-        return {
-            data: newArr
-        }
+      name,
+      salary,
+      increase: false,
+      id: this.maxId++,
+    };
+    this.setState(({ data }) => {
+      const newArr = [...data, newItem];
+      return {
+        data: newArr,
+      };
     });
-}
-
-
+  };
 
   onToggleIncrease = (id) => {
     this.setState(({ data }) => {
@@ -84,24 +82,40 @@ class App extends Component {
     });
   };
 
+  searchEmp = (items, term) => {
+
+    if (term.length === 0) {
+      return items;
+    }
+    return items.filter(item => {
+      return item.name.indexOf(term) > -1
+    })
+  }
+
+  onUpdateSearch = (term) => {
+      this.setState({term});
+  }
+
   render() {
-    const emploees = this.state.data.lenght;
+    const {data, term} = this.state;
+    const employees = this.state.data.length;
     const increased = this.state.data.filter((item) => item.increase).length;
+    const visibleData = this.searchEmp(data, term);
     return (
       <div className="app">
-        <AppInfo emploees={emploees} increased={increased} />
+        <AppInfo employees={employees} increased={increased} />
 
         <div className="search-panel">
-          <SearchPanel />
+          <SearchPanel onUpdateSearch={this.onUpdateSearch}/>
           <AppFilter />
         </div>
         <EmployeesList
-          data={this.state.data}
+          data={visibleData}
           onDelete={this.deleteItem}
           onToggleIncrease={this.onToggleIncrease}
           onToggleRise={this.onToggleRise}
         />
-        <EmployeesAddForm addItem={this.addItem}/>
+        <EmployeesAddForm addItem={this.addItem} />
       </div>
     );
   }

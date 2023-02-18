@@ -18,9 +18,9 @@ class EmployeesAddForm extends Component {
   };
 
   OnSubmit = (e) => {
-    e.PreventDefault();
+    e.preventDefault();
     if (this.state.name.length < 3 || !this.state.salary) return;
-    this.props.onAdd(this.state.name, this.state.salary);
+    this.props.addItem(this.state.name, this.state.salary);
     this.setState({
       name: "",
       salary: "",
@@ -28,7 +28,7 @@ class EmployeesAddForm extends Component {
   };
 
   render() {
-    const { name, salary } = this.state;
+    const { name, salary,} = this.state;
 
     return (
       <div className="app-add-form">
@@ -51,7 +51,7 @@ class EmployeesAddForm extends Component {
             onChange={this.onValueChange}
           />
 
-          <button className="btn btn-outline-light" addItem={this.addItem}>
+          <button className="btn btn-outline-light">
             Добавить
           </button>
         </form>
